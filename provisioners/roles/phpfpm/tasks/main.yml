@@ -8,6 +8,10 @@
         - php5-fpm
         - php5
         - php5-mysql
+        - php5-curl 
+        - php5-gd 
+        - php5-mcrypt 
+        - php5-memcached
   register: phpinstalled
   notify:
   - Start PHPFPM
