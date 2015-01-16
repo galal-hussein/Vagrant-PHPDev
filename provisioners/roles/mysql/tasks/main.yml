@@ -1,0 +1,17 @@
+---
+
+- name: Install MySQL Server
+  apt: 
+        name={{ item }}
+        state=installed
+  with_items:
+        - mysql-server
+        - mysql-client
+        - python-mysqldb
+
+- name: Create Admin user
+  mysql_user:
+        name={{ mysql_adminuser }}
+        password={{ mysql_adminpass }}
+        priv=*.*:ALL
+        state=present

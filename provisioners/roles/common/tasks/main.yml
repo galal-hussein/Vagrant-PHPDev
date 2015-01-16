@@ -1,0 +1,38 @@
+---
+
+- name: Create Users
+  user: 
+        name={{ item }} state=present shell=/bin/bash group=sudo append=yes
+  with_items:
+     - hussein
+
+- name: Deploy SSH-Keys
+  authorized_key:
+        user={{ item.name}}
+        key="{{ item.key }}"
+  with_items: ssh_keys
+
+- name: Modify Sudo File
+  lineinfile: 
+        dest=/etc/sudoers
+        regexp="^%sudo"
+        line='%sudo   ALL=(ALL:ALL) NOPASSWD:ALL'
+        validate='visudo -cf %s'
+
+- name: Disable Password Authentication
+  lineinfile: 
+        dest=/etc/ssh/sshd_config
+        regexp="^#PasswordAuthentication yes$"
+        line="PasswordAuthentication no"
+        state=present
+        backrefs=yes
+
+- name: Disable Root Login
+  lineinfile:
+        dest=/etc/ssh/sshd_config
+        regexp="^PermitRootLogin"
+        line="PermitRootLogin no"
+        state=present
+        backrefs=yes
+  notify:
+        - Restart SSH

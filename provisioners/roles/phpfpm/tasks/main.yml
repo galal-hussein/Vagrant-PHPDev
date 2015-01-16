@@ -1,0 +1,21 @@
+---
+
+- name: Install PHP-FPM
+  apt:
+        pkg={{ item }}
+        state=installed
+  with_items:
+        - php5-fpm
+        - php5
+        - php5-mysql
+  register: phpinstalled
+  notify:
+  - Start PHPFPM
+   
+- name: Create phpinfo
+  copy: 
+        src=index.php
+        dest={{ phpfpm_document_root }}
+        owner=www-data
+        group=www-data
+  register: createphpinfo

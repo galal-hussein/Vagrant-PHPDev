@@ -1,0 +1,14 @@
+[mysqld]
+datadir		= /var/lib/mysql
+socket		= /var/run/mysqld/mysqld.sock
+symbolic-links  = 0
+bind_address	= 127.0.0.1
+port		= {{ mysql_port }}
+
+[mysqld_safe]
+log-error	= /var/log/mysqld.log
+pid-file	= /var/run/mysqld/mysqld.pid
+
+[client]
+port		= {{ mysql_port }}
+socket		= /var/run/mysqld/mysqld.sock
